@@ -6,13 +6,31 @@ import pandas
 from ryanair.RyanairApi import RyanairApi
 
 
-class TestFlightReport:
+class FlightReport:
 
     def __init__(self):
         self._api = RyanairApi()
         self._file_name = 'flights.csv'
 
-    def test_report_flights(self):
+    def finder_report_flights(self):
+        params = {
+            'departureAirportIataCode': 'TLV',
+            'inboundDepartureDateFrom': '2017-04-01',
+            'inboundDepartureDateTo': '2017-12-01',
+            'language': 'en',
+            'limit': 16,
+            'offset': 0,
+            'outboundDepartureDateFrom': '2017-04-01',
+            'outboundDepartureDateTo': '2017-12-01',
+            'priceValueTo': 200,
+            'market': 'es-es'
+        }
+        response = self._api.http_get('/farefinder/3/roundTripFares', params=params)
+        print response
+        data_frame = pandas.DataFrame(response['fares'])
+        data_frame.to_csv(self._file_name, index=False, encoding='utf-8-sig')
+
+    def get_report_flights(self):
         params = {
             'ADT': 1,
             'CHD': 0,
@@ -26,7 +44,7 @@ class TestFlightReport:
             'RoundTrip': 'true',
             'TEEN': 0
         }
-        response = self._api.http_get('/en-gb/availability', params=params)
+        response = self._api.http_get('/en-gb/availability', params=params, environment='desktop')
         data_frame = pandas.DataFrame(response['trips'])
         data_frame.to_csv(self._file_name, index=False, encoding='utf-8-sig')
 
@@ -35,6 +53,7 @@ class TestFlightReport:
         parser = argparse.ArgumentParser()
         commands = parser.add_mutually_exclusive_group(required=True)
         commands.add_argument('--download', action='store_true')
+        commands.add_argument('--finder', action='store_true')
         parser.add_argument('--csv', '--filename', default=None,
                             help='Custom output/input CSV filename, by default report.csv')
         parser.add_argument('--dry-run', action='store_true',
@@ -42,7 +61,9 @@ class TestFlightReport:
         args = parser.parse_args()
         report = cls()
         if args.download:
-            report.test_report_flights()
+            report.get_report_flights()
+        elif args.finder:
+            report.finder_report_flights()
         elif args.insert:
             raise NotImplementedError()
         else:
@@ -50,4 +71,4 @@ class TestFlightReport:
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    TestFlightReport.main()
+    FlightReport.main()

@@ -8,8 +8,10 @@ from RyanairBase import RyanairBase
 
 
 class RyanairApi(RyanairBase):
-    BASE_URL = 'https://api.ryanair.com'
-    DESKTOP_BASE_URL = 'https://desktopapps.ryanair.com/v2'
+    URLS = {
+        'base': 'https://api.ryanair.com',
+        'desktop': 'https://desktopapps.ryanair.com/v2'
+    }
 
     def __init__(self):
         self._headers = {}
@@ -24,10 +26,10 @@ class RyanairApi(RyanairBase):
     def get_flights_by_country(self, geo_country):
         pass
 
-    def http_get(self, path, params=None, json_body=None):
+    def http_get(self, path, params=None, json_body=None, environment='base'):
         logging.debug('send_request({}, {}, {})'.format(path, params, json_body))
         query_string = urllib.urlencode(params) if params else None
-        url = '{}{}'.format(self.DESKTOP_BASE_URL, path)
+        url = '{}{}'.format(self.URLS[environment], path)
         response = requests.get(url, params=query_string, headers=self._headers, json=json_body)
         assert response.status_code == 200, 'STATUS {}: {}'.format(response.status_code, response.content)
         parsed = json.loads(response.content)

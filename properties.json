@@ -1,0 +1,12 @@
+{
+             "departureAirportIataCode": "TLV",
+            "inboundDepartureDateFrom": "2017-04-01",
+            "inboundDepartureDateTo": "2017-12-01",
+            "language": "en",
+            "limit": 60,
+            "offset": 0,
+            "outboundDepartureDateFrom": "2017-04-01",
+            "outboundDepartureDateTo": "2017-12-01",
+            "priceValueTo": 200,
+            "market": "es-es"
+}
