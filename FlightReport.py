@@ -1,4 +1,5 @@
 import argparse
+import json
 import logging
 
 import pandas
@@ -13,18 +14,20 @@ class FlightReport:
         self._file_name = 'flights.csv'
 
     def finder_report_flights(self):
-        params = {
-            'departureAirportIataCode': 'TLV',
-            'inboundDepartureDateFrom': '2017-04-01',
-            'inboundDepartureDateTo': '2017-12-01',
-            'language': 'en',
-            'limit': 16,
-            'offset': 0,
-            'outboundDepartureDateFrom': '2017-04-01',
-            'outboundDepartureDateTo': '2017-12-01',
-            'priceValueTo': 200,
-            'market': 'es-es'
-        }
+        # params = {
+        #     'departureAirportIataCode': 'TLV',
+        #     'inboundDepartureDateFrom': '2017-04-01',
+        #     'inboundDepartureDateTo': '2017-12-01',
+        #     'language': 'en',
+        #     'limit': 16,
+        #     'offset': 0,
+        #     'outboundDepartureDateFrom': '2017-04-01',
+        #     'outboundDepartureDateTo': '2017-12-01',
+        #     'priceValueTo': 200,
+        #     'market': 'es-es'
+        # }
+        with open('properties.json') as data_file:
+            params = json.load(data_file)
         response = self._api.http_get('/farefinder/3/roundTripFares', params=params)
         logging.info('Found {} total flights'.format(response['total']))
         logging.info('Fares of {} total'.format(len(response['fares'])))
