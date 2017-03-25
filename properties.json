@@ -1,12 +1,27 @@
 {
-             "departureAirportIataCode": "TLV",
-            "inboundDepartureDateFrom": "2017-04-01",
-            "inboundDepartureDateTo": "2017-12-01",
-            "language": "en",
-            "limit": 60,
-            "offset": 0,
-            "outboundDepartureDateFrom": "2017-04-01",
-            "outboundDepartureDateTo": "2017-12-01",
-            "priceValueTo": 200,
-            "market": "es-es"
+  "finder": {
+    "departureAirportIataCode": "TLV",
+    "inboundDepartureDateFrom": "2017-04-01",
+    "inboundDepartureDateTo": "2017-12-01",
+    "language": "en",
+    "limit": 60,
+    "offset": 0,
+    "outboundDepartureDateFrom": "2017-04-01",
+    "outboundDepartureDateTo": "2017-12-01",
+    "priceValueTo": 200,
+    "market": "es-es"
+  },
+  "report":{
+      "ADT": 1,
+            "CHD": 0,
+            "DateIn": "2017-04-04",
+            "DateOut": "2017-04-10",
+            "Destination": "BGY",
+            "FlexDaysIn": 6,
+            "FlexDaysOut": 6,
+            "INF": 0,
+            "Origin": "TLV",
+            "RoundTrip": "true",
+            "TEEN": 0
+  }
 }

@@ -12,23 +12,15 @@ class FlightReport:
     def __init__(self):
         self._api = RyanairApi()
         self._file_name = 'flights.csv'
+        self._properties = self.get_properties()
 
-    def finder_report_flights(self):
-        # params = {
-        #     'departureAirportIataCode': 'TLV',
-        #     'inboundDepartureDateFrom': '2017-04-01',
-        #     'inboundDepartureDateTo': '2017-12-01',
-        #     'language': 'en',
-        #     'limit': 16,
-        #     'offset': 0,
-        #     'outboundDepartureDateFrom': '2017-04-01',
-        #     'outboundDepartureDateTo': '2017-12-01',
-        #     'priceValueTo': 200,
-        #     'market': 'es-es'
-        # }
+    def get_properties(self):
         with open('properties.json') as data_file:
             params = json.load(data_file)
-        response = self._api.http_get('/farefinder/3/roundTripFares', params=params)
+        return params
+
+    def finder_report_flights(self):
+        response = self._api.http_get('/farefinder/3/roundTripFares', params=self._properties['finder'])
         logging.info('Found {} total flights'.format(response['total']))
         logging.info('Fares of {} total'.format(len(response['fares'])))
         data_frame = pandas.DataFrame(response['fares'])
@@ -36,20 +28,7 @@ class FlightReport:
         logging.info('Report Saved to csv')
 
     def get_report_flights(self):
-        params = {
-            'ADT': 1,
-            'CHD': 0,
-            'DateIn': '2017-04-04',
-            'DateOut': '2017-04-10',
-            'Destination': 'BGY',
-            'FlexDaysIn': 6,
-            'FlexDaysOut': 6,
-            'INF': 0,
-            'Origin': 'TLV',
-            'RoundTrip': 'true',
-            'TEEN': 0
-        }
-        response = self._api.http_get('/en-gb/availability', params=params, environment='desktop')
+        response = self._api.http_get('/en-gb/availability', params=self._properties['report'], environment='desktop')
         data_frame = pandas.DataFrame(response['trips'])
         data_frame.to_csv(self._file_name, index=False, encoding='utf-8-sig')
 
