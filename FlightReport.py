@@ -26,9 +26,11 @@ class FlightReport:
             'market': 'es-es'
         }
         response = self._api.http_get('/farefinder/3/roundTripFares', params=params)
-        print response
+        logging.info('Found {} total flights'.format(response['total']))
+        logging.info('Fares of {} total'.format(len(response['fares'])))
         data_frame = pandas.DataFrame(response['fares'])
         data_frame.to_csv(self._file_name, index=False, encoding='utf-8-sig')
+        logging.info('Report Saved to csv')
 
     def get_report_flights(self):
         params = {
