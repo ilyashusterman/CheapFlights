@@ -26,6 +26,7 @@ class FlightReport:
         data_frame = pandas.DataFrame(response['fares'])
         data_frame.to_csv(self._file_name, index=False, encoding='utf-8-sig')
         logging.info('Report Saved to csv')
+        # TODO need to parse currectly to csv
 
     def get_report_flights(self):
         response = self._api.http_get('/en-gb/availability', params=self._properties['report'], environment='desktop')
